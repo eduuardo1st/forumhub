@@ -5,6 +5,7 @@ import com.eduuardo.forumhub.repository.*;
 import com.eduuardo.forumhub.repository.UsuarioRepository;
 import com.eduuardo.forumhub.repository.CursoRepository;
 import com.eduuardo.forumhub.repository.TopicoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,14 +53,14 @@ public class TopicoService {
 
     public DadosDetalhamentoTopico detalhar(Long id) {
         var topico = topicoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tópico não encontrado."));
+                .orElseThrow(EntityNotFoundException::new);
 
         return new DadosDetalhamentoTopico(topico);
     }
 
     public DadosDetalhamentoTopico atualizar(Long id, DadosAtualizacaoTopico dados) {
         var topico = topicoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tópico não encontrado."));
+                .orElseThrow(EntityNotFoundException::new);
 
         topico.atualizarInformacoes(dados);
 
@@ -68,7 +69,7 @@ public class TopicoService {
 
     public void excluir(Long id) {
         var topico = topicoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tópico não encontrado para exclusão."));
+                .orElseThrow(EntityNotFoundException::new);
 
         topicoRepository.delete(topico);
     }
